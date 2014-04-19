@@ -29,3 +29,34 @@
    (a {:href "index.html"}
     (i {:class "fa fa-dashboard"})
     (span " Dashboard"))))
+
+(defn flight-log
+  ""
+  []
+  (li
+   (a {:href "pages/widgets.html"}
+    (i {:class "fa fa-plane"})
+    (span " My Flight Log")
+    (small {:class "badge pull-right bg-green"} "new"))))
+
+(defn settings
+  ""
+  []
+  (li {:class "treeview"}
+   (a {:href "#"}
+    (i {:class "fa fa-gears"})
+    (span "Settings")
+    (i {:class "fa fa-angle-left pull-right"}))
+   (ul {:class "treeview-menu"}
+    (li
+     (a {:href "pages/charts/morris.html"}
+      (i {:class "fa fa-angle-double-right"})
+      " Account"))
+    (li
+     (a {:href "pages/charts/flot.html"}
+      (i {:class "fa fa-angle-double-right"})
+      " Preferences"))
+    (li
+     (a {:href "pages/charts/inline.html"}
+      (i {:class "fa fa-angle-double-right"})
+      " ???")))))
