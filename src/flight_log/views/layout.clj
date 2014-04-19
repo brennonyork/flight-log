@@ -3,7 +3,7 @@
             [clojure.string :as s]
             [ring.util.response :refer [content-type response]]
             [compojure.response :refer [Renderable]]
-            [flight-log.views.templates.home :as home]))
+            [flight-log.views.templates.base :as base]))
 
 ;(def template-path "flight_log/views/templates/")
 
@@ -16,9 +16,8 @@
       ;            :servlet-context (:context request))
       ;  (parser/render-file (str template-path template))
       ;  response)
-      (response home/index)
+      (response base/index)
       "text/html; charset=utf-8")))
 
 (defn render [template & [params]]
   (RenderableTemplate. template params))
-
