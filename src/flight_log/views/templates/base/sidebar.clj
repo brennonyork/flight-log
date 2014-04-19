@@ -1,4 +1,4 @@
-(ns flight-log.views.templates.sidebar
+(ns flight-log.views.templates.base.sidebar
   (:require [clj-template.html5 :refer :all :exclude [map meta time]]))
 
 (defn user-panel
