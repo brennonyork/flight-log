@@ -24,25 +24,34 @@
 
 (defn dashboard
   ""
-  []
-  (li {:class "active"}
-   (a {:href "index.html"}
+  [& [sidebar-key]]
+  (li {:class (if sidebar-key "active" "")}
+   (a {:href "dashboard"}
     (i {:class "fa fa-dashboard"})
     (span " Dashboard"))))
 
 (defn flight-log
   ""
-  []
-  (li
-   (a {:href "pages/widgets.html"}
+  [& [sidebar-key]]
+  (li {:class (if sidebar-key "treeview active" "treeview")}
+   (a {:href "#"}
     (i {:class "fa fa-plane"})
     (span " My Flight Log")
-    (small {:class "badge pull-right bg-green"} "new"))))
+    (i {:class "fa fa-angle-left pull-right"}))
+   (ul {:class "treeview-menu"}
+    (li
+     (a {:href "flight-log"}
+      (i {:class "fa fa-angle-double-right"})
+      " Overview"))
+    (li
+     (a {:href "flight-entry"}
+      (i {:class "fa fa-angle-double-right"})
+      " Add An Entry")))))
 
 (defn settings
   ""
-  []
-  (li {:class "treeview"}
+  [& [sidebar-key]]
+  (li {:class (if sidebar-key "treeview active" "treeview")}
    (a {:href "#"}
     (i {:class "fa fa-gears"})
     (span "Settings")
@@ -55,8 +64,12 @@
     (li
      (a {:href "pages/charts/flot.html"}
       (i {:class "fa fa-angle-double-right"})
-      " Preferences"))
-    (li
-     (a {:href "pages/charts/inline.html"}
-      (i {:class "fa fa-angle-double-right"})
-      " ???")))))
+      " Site Preferences")))))
+
+(defn activated-sidebar-menu
+  "Ensures the sidebar is active for the passed in key"
+  [sidebar-key]
+  (ul {:class "sidebar-menu"}
+   (if (= sidebar-key :dashboard) (dashboard :active) (dashboard))
+   (if (= sidebar-key :flight-log) (flight-log :active) (flight-log))
+   (if (= sidebar-key :settings) (settings :active) (settings))))
