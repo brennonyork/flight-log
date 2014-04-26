@@ -1,6 +1,8 @@
 (ns flight-log.views.templates.flight-entry
-  (:require [flight-log.views.templates.base :as fl-base]
-            [clj-template.html5 :refer :all :exclude [main map meta time]]))
+  (:require clojure.string
+            [flight-log.views.templates.base :as fl-base]
+            [clj-template.html5 :refer :all :exclude [main map meta time]]
+            [clj-template.util.bootstrap :refer :all]))
 
 (defn- content-header
   ""
@@ -18,103 +20,148 @@
 (defn- content
   ""
   []
-  (div {:class "row"}
-   (div {:class "col-lg-8"}
+  (let [col-xs-6-fg (fn [& body]
+                      (col-xs-6 (form-group (clojure.string/join " " body))))
+        col-sm-6-fg (fn [& body]
+                      (col-sm-6 (form-group (clojure.string/join " " body))))
+        label-with-input (fn [l & {:as k}]
+                           (str (label l) (input- (merge {:type "text" :class "form-control input-sm"} k))))]
+  (row
+   (col-lg-8
     (div {:class "box box-primary"}
      (div {:class "box-header"}
       (h3 {:class "box-title"} "Add An Entry"))
      (form {:role "form" :method "get" :action "/data"}
       (div {:class "box-body"}
-       (div {:class "row"}
-        (div {:class "col-sm-6"}
-         (div {:class "form-group"}
+       (row
+        (col-xs-6-fg
           (label "Date:")
           (div {:class "input-group"}
            (div {:class "input-group-addon"}
             (i {:class "fa fa-calendar"}))
-           (input- {:type "text" :class "form-control input-sm" :data-inputmask "'alias': 'dd/mm/yyyy'" :data-mask ""}))))
-        (div {:class "col-sm-6"}
-         (div {:class "form-group"}
-          (label "Total Flight Time")
-          (input- {:type "text" :class "form-control input-sm"}))))
-       (div {:class "row"}
-        (div {:class "col-xs-6"}
-         (div {:class "form-group"}
-          (label "Aircraft Type")
-          (input- {:type "text" :class "form-control input-sm" :name "fname"})))
-        (div {:class "col-xs-6"}
-         (div {:class "form-group"}
-          (label "Aircraft Indentifier")
-          (input- {:type "text" :class "form-control input-sm"}))))
-       (div {:class "form-group"}
-        (label "Route of Flight")
-        (small {:style "padding-left:5px"} "Separate airports with a space")
-        (input- {:type "text" :class "form-control input-sm"}))
-       (div {:class "row"}
-        (div {:class "col-sm-6"} (div {:class "row"}
-        (div {:class "col-xs-6"}
-         (div {:class "form-group"}
-          (input- {:type "radio" :class "line-red" :name "aircraft-class" :value "sel"})
-          (label "SEL")))
-        (div {:class "col-xs-6"}
-         (div {:class "form-group"}
-          (input- {:type "radio" :class "line-red" :name "aircraft-class" :value "mel"})
-          (label "MEL")))))
-        (div {:class "col-sm-6"} (div {:class "row"}
-        (div {:class "col-xs-6"}
-         (div {:class "form-group"}
-          (input- {:type "radio" :class "line-red" :name "aircraft-class" :value "ses"})
-          (label "SES")))
-        (div {:class "col-xs-6"}
-         (div {:class "form-group"}
-          (input- {:type "radio" :class "line-red" :name "aircraft-class" :value "mes"})
-          (label "MES"))))))
-       (div {:class "row"}
-        (div {:class "col-xs-6"}
-         (div {:class "row"}
-          (div {:class "col-xs-4"}
-           (div {:class "form-group"}
-            (input- {:type "checkbox" :class "line-aero" :name "flight-rule" :value "vfr" :id "solo"})
-            (label "Solo")))
-          (div {:class "col-xs-8"}
-           (div {:class "form-group"}
-            (input- {:type "text" :class "form-control input-sm" :placeholder "Solo time ..." :id "solo-hours" :disabled ""}))))
-        ;(div {:class "col-xs-6"}
-         (div {:class "form-group"}
-          (input- {:type "checkbox" :class "line-aero" :name "flight-rule" :value "ifr"})
-          (label "IFR"))))
-       (div {:class "row"}
-        (div {:class "col-xs-6"}
-         (div {:class "form-group"}
-          (input- {:type "radio" :class "line-green" :name "flight-distance" :value "vfr"})
-          (label "Local")))
-        (div {:class "col-xs-6"}
-         (div {:class "form-group"}
-          (input- {:type "radio" :class "line-green" :name "flight-distance" :value "ifr"})
-          (label "Cross Country"))))
-       (div {:class "row"}
-        (div {:class "col-xs-6"}
-         (div {:class "form-group"}
-          (input- {:type "radio" :class "line-aero" :name "flight-time" :value "vfr"})
-          (label "Day")))
-        (div {:class "col-xs-6"}
-         (div {:class "form-group"}
-          (input- {:type "radio" :class "line-aero" :name "flight-time" :value "ifr"})
-          (label "Night"))))
-       (div {:class "row"}
-        (div {:class "col-xs-4"}
-         (div {:class "form-group"}
-          (input- {:type "radio" :class "line-purple" :name "command-type" :value "pic"})
-          (label "PIC")))
-        (div {:class "col-xs-4"}
-         (div {:class "form-group"}
-          (input- {:type "radio" :class "line-purple" :name "command-type" :value "sic"})
-          (label "SIC")))
-        (div {:class "col-xs-4"}
-         (div {:class "form-group"}
-          (input- {:type "radio" :class "line-purple" :name "command-type" :value "dual"})
-          (label "Dual"))))
-       (div {:class "form-group"}
+           (input- {:type "text" :class "form-control input-sm" :data-inputmask "'alias': 'dd/mm/yyyy'" :data-mask ""})))
+        (col-xs-6-fg
+          (label-with-input "Total Flight Time" :name "total-flight-time")))
+       (row
+        (col-xs-6-fg
+          (label-with-input "Aircraft Type" :name "aircraft-type"))
+        (col-xs-6-fg
+          (label-with-input "Aircraft Indentifier" :name "aircraft-ident")))
+       (row
+        (col-sm-6-fg
+          (label "Route of Flight")
+          (small {:style "padding-left:5px"} "Separate airports with a space")
+          (input- {:type "text" :class "form-control input-sm"}))
+        (col-sm-6
+         (row
+          (col-xs-6-fg
+            (label-with-input "# Ldgs." :name "number-landings"))
+          (col-xs-6-fg
+            (label-with-input "# Inst. App." :name "number-instrument-approaches")))))
+       (row
+        (col-xs-12
+         (label "Aircraft Category"))
+        (col-sm-6
+         (row
+          (col-xs-6-fg
+            (input- {:type "radio" :class "line-red" :name "aircraft-class" :value "sel"})
+            (label "SEL"))
+          (col-xs-6-fg
+            (input- {:type "radio" :class "line-red" :name "aircraft-class" :value "mel"})
+            (label "MEL"))))
+        (col-sm-6
+         (row
+          (col-xs-6-fg
+            (input- {:type "radio" :class "line-red" :name "aircraft-class" :value "ses"})
+            (label "SES"))
+          (col-xs-6-fg
+            (input- {:type "radio" :class "line-red" :name "aircraft-class" :value "mes"})
+            (label "MES")))))
+       ;; Conditions of Flight
+       (row
+        (col-xs-12
+         (label "Conditions of Flight"))
+        (col-sm-6
+         (row
+          (col-xs-6-fg
+            (input- {:type "checkbox" :class "line-blue" :name "condition-night" :id "condition-night"})
+            (label "Night"))
+          (col-xs-6-fg
+            (input- {:type "text" :class "form-control input-sm" :placeholder "Night time ..." :id "condition-night-hours" :disabled ""}))))
+        (col-sm-6
+         (row
+          (col-xs-6-fg
+            (input- {:type "checkbox" :class "line-blue" :name "instrument-actual" :id "instrument-actual"})
+            (label "Inst. (Actual)"))
+          (col-xs-6-fg
+            (input- {:type "text" :class "form-control input-sm" :placeholder "Actual Instrument time ..." :id "instrument-actual-hours" :disabled ""}))))
+        (col-sm-6
+         (row
+          (col-xs-6-fg
+            (input- {:type "checkbox" :class "line-blue" :name "instrument-simulated" :id "instrument-simulated"})
+            (label "Inst. (Simulated)"))
+          (col-xs-6-fg
+            (input- {:type "text" :class "form-control input-sm" :placeholder "Simulated Instrument time ..." :id "instrument-simulated-hours" :disabled ""}))))
+        (col-sm-6
+         (row
+          (col-xs-6-fg
+            (input- {:type "checkbox" :class "line-blue" :name "flight-simulator" :id "flight-simulator"})
+            (label "Flight Simulator"))
+          (col-xs-6-fg
+            (input- {:type "text" :class "form-control input-sm" :placeholder "Flight Simulator time ..." :id "flight-simulator-hours" :disabled ""})))))
+       ;; Types of Piloting
+       (row
+        (col-xs-12
+         (label "Type of Piloting"))
+        (col-sm-6
+         (row
+          (col-xs-6-fg
+            (input- {:type "checkbox" :class "line-grey" :name "pic" :id "pic"})
+            (label "PIC (incl. Solo)"))
+          (col-xs-6-fg
+            (input- {:type "text" :class "form-control input-sm" :placeholder "PIC time ..." :id "pic-hours" :disabled ""}))))
+        (col-sm-6
+         (row
+          (col-xs-6-fg
+            (input- {:type "checkbox" :class "line-grey" :name "sic" :id "sic"})
+            (label "SIC"))
+          (col-xs-6-fg
+            (input- {:type "text" :class "form-control input-sm" :placeholder "SIC time ..." :id "sic-hours" :disabled ""}))))
+        (col-sm-6
+         (row
+          (col-xs-6-fg
+            (input- {:type "checkbox" :class "line-grey" :name "dual" :id "dual"})
+            (label "Dual"))
+          (col-xs-6-fg
+            (input- {:type "text" :class "form-control input-sm" :placeholder "Dual time ..." :id "dual-hours" :disabled ""}))))
+        (col-sm-6
+         (row
+          (col-xs-6-fg
+            (input- {:type "checkbox" :class "line-grey" :name "cfi" :id "cfi"})
+            (label "CFI"))
+          (col-xs-6-fg
+            (input- {:type "text" :class "form-control input-sm" :placeholder "CFI time ..." :id "cfi-hours" :disabled ""}))))
+        (col-sm-6
+         (row
+          (col-xs-6-fg
+            (input- {:type "checkbox" :class "line-grey" :name "cross-country" :id "cross-country"})
+            (label "Cross Country"))
+          (col-xs-6-fg
+            (input- {:type "text" :class "form-control input-sm" :placeholder "Cross Country time ..." :id "cross-country-hours" :disabled ""}))))
+        (col-sm-6
+         (row
+          (col-xs-6-fg
+            (input- {:type "checkbox" :class "line-grey" :name "safety" :id "safety"})
+            (label "Safety"))
+          (col-xs-6-fg
+            (input- {:type "text" :class "form-control input-sm" :placeholder "Safety time ..." :id "safety-hours" :disabled ""})))))
+       ;; Remarks
+       (row
+        (col-xs-12
+         (form-group
+          (label "Additional Remarks")
+          (textarea {:class "form-control input-sm" :name "remarks"}))))
+       (form-group
         (label {:for "imageAttachment"} "Attach Image")
         (input- {:type "file" :id "imageAttachment"})
         (p {:class "help-block"} "Attach an image to help validate the flight records.")))
@@ -123,7 +170,7 @@
    (div {:class "col-lg-4"}
     (div {:class "box box-solid box-success"}
      (div {:class "box-header"}
-      (h3 {:class "box-title"} "Recent Activity"))))))
+      (h3 {:class "box-title"} "Recent Activity")))))))
 
 (defn footer-content
   ""
