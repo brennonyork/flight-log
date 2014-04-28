@@ -1,64 +1,51 @@
 (ns flight-log.views.templates.base
   (:require [clj-template.html5 :refer :all :exclude [main map meta time]]
             [clj-template.util :refer [str-loop]]
+            [flight-log.views.templates.base.head :as fl-head]
             [flight-log.views.templates.base.navigation :as fl-nav]
             [flight-log.views.templates.base.sidebar :as fl-sidebar]))
 
-(def website-title "Flight Log")
+(defn inject-js
+  "Inject any default javascript files (possibly through CDN) as well as any other passed in files to render"
+  [js-includes]
+  (str
+   (script {:src "http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"})
+   (str-loop [js-src js-includes]
+     (script {:type "text/javascript" :src js-src}))))
 
-(defn main
+(defn render
   ""
-  [{:keys [sidebar-key]} content-header content & [footer-content]]
-  (html
-   (head
-    (meta- {:charset "UTF-8"})
-    (title website-title)
-    (meta- {:content "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" :name "viewport"})
-    (str-loop [link ["css/bootstrap.min.css" "css/font-awesome.min.css" "css/ionicons.min.css"
-                     "css/morris/morris.css" "css/jvectormap/jquery-jvectormap-1.2.2.css"
-                     "css/fullcalendar/fullcalendar.css" "css/daterangepicker/daterangepicker-bs3.css"
-                     "css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" "css/AdminLTE.css"
-                     "css/iCheck/all.css"]]
-      (link- {:rel "stylesheet" :type "text/css" :href link}))
-    "<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-     <!--[if lt IE 9]>
-         <script src=\"https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js\"></script>
-         <script src=\"https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js\"></script>
-     <![endif]-->")
-   (body {:class "skin-blue"}
-    (header {:class "header"}
-     (a {:href "index.html" :class "logo"} website-title)
-     (nav {:class "navbar navbar-static-top" :role "navigation"}
-      (a {:href "#" :class "navbar-btn sidebar-toggle" :data-toggle "offcanvas" :role "button"}
-       (span {:class "sr-only"} "Toggle navigation")
-       (span {:class "icon-bar"})
-       (span {:class "icon-bar"})
-       (span {:class "icon-bar"}))
-      (div {:class "navbar-right"}
-       (ul {:class "nav navbar-nav"}
-        (fl-nav/messages)
-        (fl-nav/notifications)
-        (fl-nav/tasks)
-        (fl-nav/user-menu)))))
-     (div {:class "wrapper row-offcanvas row-offcanvas-left"}
-      (aside {:class "left-side sidebar-offcanvas"}
-       (section {:class "sidebar"}
-        (fl-sidebar/user-panel)
-        (fl-sidebar/activated-sidebar-menu sidebar-key)))
-       (aside {:class "right-side"}
-        ;; Magic happens here
-        (section {:class "content-header"} content-header)
-        (section {:class "content"} content)))
-     (script {:src "//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"})
-     (script {:src "//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"})
-     (str-loop [src ["js/jquery-ui-1.10.3.min.js" "js/bootstrap.min.js"
-                     "js/plugins/sparkline/jquery.sparkline.min.js"
-                     "js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"
-                     "js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"
-                     "js/plugins/fullcalendar/fullcalendar.min.js" "js/plugins/jqueryKnob/jquery.knob.js"
-                     "js/plugins/daterangepicker/daterangepicker.js"
-                     "js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"
-                     "js/plugins/iCheck/icheck.min.js" "js/AdminLTE/app.js"]]
-      (script {:type "text/javascript" :src src}))
-     (when footer-content footer-content))))
+  [{:keys [html-attrs ;; attributes for the `html` tag
+           body-attrs ;; attributes for the `body` tag
+           sidebar-key ;; sidebar key if the any sidebar item should be activated
+           content-header
+           content
+           css-includes
+           js-includes]
+    :or {html-attrs {}
+         body-attrs {}
+         sidebar-key nil
+         content-header ""
+         content ""
+         css-includes []
+         js-includes []}}
+   & opts]
+  (let [website-title "Flight Log"
+        opts (set opts)]
+    (html html-attrs
+     (fl-head/head website-title css-includes)
+     (if (contains? opts :with-navigation)
+       ;; IF TRUE
+       (body body-attrs
+        (fl-nav/header website-title)
+        (div {:class "wrapper row-offcanvas row-offcanvas-left"}
+         (aside {:class "left-side sidebar-offcanvas"}
+          (fl-sidebar/sidebar sidebar-key))
+         (aside {:class "right-side"}
+          (section {:class "content-header"} content-header)
+          (section {:class "content"} content)))
+        (inject-js js-includes))
+       ;; ELSE FALSE
+       (body body-attrs
+        content
+        (inject-js js-includes))))))

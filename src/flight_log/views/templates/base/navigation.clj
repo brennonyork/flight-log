@@ -1,5 +1,8 @@
 (ns flight-log.views.templates.base.navigation
-  (:require [clj-template.html5 :refer :all :exclude [map meta time]]))
+  (:require [clj-template.html5 :refer :all :rename {map html-map
+                                                     meta html-meta
+                                                     time html-time
+                                                     header html-header}]))
 
 (defn messages
   ""
@@ -69,3 +72,21 @@
     (li {:class "user-header bg-light-blue"}
      (img- {:src "img/avatar3.png" :class "img-circle" :alt "User Image"})
      (p "Jane Doe - Web Dev" (small "Member since Nov. 2012"))))))
+
+(defn header
+  ""
+  [website-title]
+  (html-header {:class "header"}
+   (a {:href "index.html" :class "logo"} website-title)
+   (nav {:class "navbar navbar-static-top" :role "navigation"}
+    (a {:href "#" :class "navbar-btn sidebar-toggle" :data-toggle "offcanvas" :role "button"}
+     (span {:class "sr-only"} "Toggle navigation")
+     (span {:class "icon-bar"})
+     (span {:class "icon-bar"})
+     (span {:class "icon-bar"}))
+    (div {:class "navbar-right"}
+     (ul {:class "nav navbar-nav"}
+      (messages)
+      (notifications)
+      (tasks)
+      (user-menu))))))

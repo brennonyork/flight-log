@@ -73,3 +73,10 @@
    (if (= sidebar-key :dashboard) (dashboard :active) (dashboard))
    (if (= sidebar-key :flight-log) (flight-log :active) (flight-log))
    (if (= sidebar-key :settings) (settings :active) (settings))))
+
+(defn sidebar
+  ""
+  [sidebar-key]
+  (section {:class "sidebar"}
+   (user-panel)
+   (activated-sidebar-menu sidebar-key)))

@@ -1,28 +1,23 @@
 (ns flight-log.routes.home
-  (:use compojure.core)
-  (:require [flight-log.views.layout :as layout]
+  (:require [compojure.core :refer [defroutes]]
+            [liberator.core :as liberate :refer [defresource]]
+            [flight-log.views.layout :as layout]
             [flight-log.util :as util]
-            [flight-log.views.templates.login :as login]
-            [flight-log.views.templates.dashboard :as dashboard]
-            [flight-log.views.templates.flight-log :as flight-log]
-            [flight-log.views.templates.flight-entry :as flight-entry]))
+            [flight-log.views.pages.login :as login]
+            [flight-log.views.pages.dashboard :as dashboard]
+            [flight-log.views.pages.flight-log :as flight-log]
+            [flight-log.views.pages.flight-entry :as flight-entry]))
 
-(defn home-page []
-  (layout/render (dashboard/main) {:content (util/md->html "/md/docs.md")}))
+(defmacro GET [route-str page-key]
+  `(compojure.core/GET ~route-str [& ~'data] (layout/page ~page-key ~'data)))
 
-(defn login-page []
-  (layout/render (login/main)))
-
-(defn flight-log-page []
-  (layout/render (flight-log/main)))
-
-(defn flight-entry-page []
-  (layout/render (flight-entry/main)))
+(defmacro POST [route-str page-key]
+  `(compojure.core/POST ~route-str [& ~'data] (layout/page ~page-key ~'data)))
 
 (defroutes home-routes
-  (GET "/" [] (home-page))
-  (GET "/login" [] (login-page))
-  (GET "/dashboard" [] (home-page))
-  (GET "/flight-log" [] (flight-log-page))
-  (GET "/flight-entry" [] (flight-entry-page))
-  (GET "/data" [& data] (flight-entry-page)))
+  (GET "/" :dashboard)
+  (GET "/login" :login)
+  (GET "/dashboard" :dashboard)
+  (GET "/flight-log" :flight-log)
+  (GET "/flight-entry" :flight-entry)
+  (GET "/data" :flight-entry))

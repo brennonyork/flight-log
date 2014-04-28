@@ -1,10 +1,14 @@
-(ns flight-log.views.templates.flight-entry
+(ns flight-log.views.pages.flight-entry
   (:require clojure.string
             [flight-log.views.templates.base :as fl-base]
-            [clj-template.html5 :refer :all :exclude [main map meta time]]
+            [clj-template.html5 :refer :all :rename {main html-main
+                                                     map html-map
+                                                     meta html-meta
+                                                     time html-time}]
+            [clj-template.util :refer [str-loop]]
             [clj-template.util.bootstrap :refer :all]))
 
-(defn- content-header
+(defn content-header
   ""
   []
   (str
@@ -17,7 +21,7 @@
     (li "My Flight Log")
     (li {:class "active"} "Add An Entry"))))
 
-(defn- content
+(defn content
   ""
   []
   (let [col-xs-6-fg (fn [& body]
@@ -39,7 +43,7 @@
           (div {:class "input-group"}
            (div {:class "input-group-addon"}
             (i {:class "fa fa-calendar"}))
-           (input- {:type "text" :class "form-control input-sm" :data-inputmask "'alias': 'dd/mm/yyyy'" :data-mask ""})))
+           (input- {:type "text" :class "form-control input-sm" :data-inputmask "'alias': 'dd/mm/yyyy'" :data-mask "" :name "date"})))
         (col-xs-6-fg
           (label-with-input "Total Flight Time" :name "total-flight-time")))
        (row
@@ -60,7 +64,8 @@
             (label-with-input "# Inst. App." :name "number-instrument-approaches")))))
        (row
         (col-xs-12
-         (label "Aircraft Category"))
+         (label "Aircraft Category")
+         (sup {:style "padding-left:2px"} (a {:href "#"} (i {:class "fa fa-question-circle"}))))
         (col-sm-6
          (row
           (col-xs-6-fg
@@ -80,7 +85,9 @@
        ;; Conditions of Flight
        (row
         (col-xs-12
-         (label "Conditions of Flight"))
+         (label "Conditions of Flight")
+         (sup {:style "padding-left:2px"} (i {:class "fa fa-question-circle" :data-toggle "tooltip" :data-placement "right"
+                                              :title "http://www.ecfr.gov/cgi-bin/text-idx?SID=0d4a360812218d9b7b1fe9927ecb0b10&node=14:2.0.1.1.2.1.1.31&rgn=div8"})))
         (col-sm-6
          (row
           (col-xs-6-fg
@@ -112,7 +119,9 @@
        ;; Types of Piloting
        (row
         (col-xs-12
-         (label "Type of Piloting"))
+         (label "Type of Piloting")
+         (sup {:style "padding-left:2px"} (i {:class "fa fa-question-circle" :data-toggle "tooltip" :data-placement "right"
+                                              :title "http://www.ecfr.gov/cgi-bin/text-idx?SID=0d4a360812218d9b7b1fe9927ecb0b10&node=14:2.0.1.1.2.1.1.31&rgn=div8"})))
         (col-sm-6
          (row
           (col-xs-6-fg
@@ -176,6 +185,20 @@
   ""
   []
   (str
+   (script {:src "//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"})
+   ;(script {:src "//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"})
+   (str-loop [src ["js/jquery-ui-1.10.3.min.js"
+                   "js/bootstrap.min.js"
+                   ;"js/plugins/sparkline/jquery.sparkline.min.js"
+                   ;"js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"
+                   ;"js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"
+                   ;"js/plugins/fullcalendar/fullcalendar.min.js"
+                   ;"js/plugins/jqueryKnob/jquery.knob.js"
+                   ;"js/plugins/daterangepicker/daterangepicker.js"
+                   ;"js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"
+                   "js/plugins/iCheck/icheck.min.js"
+                   "js/AdminLTE/app.js"]]
+     (script {:type "text/javascript" :src src}))
    (script {:src "js/plugins/input-mask/jquery.inputmask.js" :type "text/javascript"})
    (script {:src "js/plugins/input-mask/jquery.inputmask.date.extensions.js" :type "text/javascript"})
    (script {:src "js/plugins/input-mask/jquery.inputmask.extensions.js" :type "text/javascript"})
@@ -207,7 +230,7 @@
        });
      });")))
 
-(defn main
-  ""
-  []
-  (fl-base/main {:sidebar-key :flight-log} (content-header) (content) (footer-content)))
+;; (defn main
+;;   ""
+;;   []
+;;   (fl-base/main {:sidebar-key :flight-log} (content-header) (content) (footer-content)))

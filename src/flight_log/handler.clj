@@ -10,16 +10,13 @@
             [environ.core :refer [env]]
             [flight-log.routes.cljsexample :refer [cljs-routes]]))
 
-(defroutes
-  app-routes
+(defroutes app-routes
   (route/resources "/")
   (route/not-found "Not Found"))
 
 (defn init
-  "init will be called once when
-   app is deployed as a servlet on
-   an app server such as Tomcat
-   put any initialization code here"
+  "init will be called once when app is deployed as a servlet on an app server such as Tomcat
+   * put any initialization code here"
   []
   (timbre/set-config!
     [:appenders :rotor]

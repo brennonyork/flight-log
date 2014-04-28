@@ -16,6 +16,7 @@
                  [org.clojure/clojure "1.6.0"]
                  [com.taoensso/tower "2.0.2"]
                  [cljs-ajax "0.2.3"]
+                 [liberator "0.11.0"]
                  ;[clj-template "0.9.1"]
                  [selmer "0.6.5"]
                  [lib-noir "0.8.1"]

@@ -1,6 +1,7 @@
-(ns flight-log.views.templates.dashboard
-  (:require [flight-log.views.templates.base :as fl-base]
-            [clj-template.html5 :refer :all :exclude [main map meta time]]))
+(ns flight-log.views.pages.dashboard
+  (:require [clj-template.html5 :refer :all :exclude [main map meta time]]
+            [clj-template.util :refer [str-loop]]
+            [flight-log.views.templates.base :as fl-base]))
 
 (defn mk-stat-box
   ""
@@ -14,7 +15,7 @@
    (a {:href stat-href :class "small-box-footer"}
     "More info " (i {:class "fa fa-arrow-circle-right"}))))
 
-(defn- content-header
+(defn content-header
   ""
   []
   (str
@@ -91,10 +92,37 @@
          (div {:class "knob-label"} "Disk"))
         (div {:class "col-xs-4 text-center" :style "border-right:1px solid #f4f4f4;"}
          (input- {:type "text" :class "knob" :data-readonly "true" :value "30" :data-width "60" :data-height "60" :data-angleArc "250" :data-angleOffset "-125" :data-fgColor "#3c8dbc"})
-         (div {:class "knob-label"} "RAM"))
-            )))))))
+         (div {:class "knob-label"} "RAM")))))))))
 
-(defn main
+;; (defn content-footer
+;;   ""
+;;   []
+;;   (str
+;;    (script {:src "//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"})
+;;    ;(script {:src "//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"})
+;;    (str-loop [src ["js/jquery-ui-1.10.3.min.js"
+;;                    "js/bootstrap.min.js"
+;;                    ;"js/plugins/sparkline/jquery.sparkline.min.js"
+;;                    ;"js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"
+;;                    ;"js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"
+;;                    ;"js/plugins/fullcalendar/fullcalendar.min.js"
+;;                    ;"js/plugins/jqueryKnob/jquery.knob.js"
+;;                    ;"js/plugins/daterangepicker/daterangepicker.js"
+;;                    ;"js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"
+;;                    ;"js/plugins/iCheck/icheck.min.js"
+;;                    "js/AdminLTE/app.js"]]
+;;      (script {:type "text/javascript" :src src}))))
+
+(defn render
   ""
-  []
-  (fl-base/main {:sidebar-key :dashboard} (content-header) (content)))
+  [& args]
+  (fl-base/render
+   {:body-attrs {:class "skin-blue"}
+    :sidebar-key :dashboard
+    :css-includes :all-css
+    :js-includes ["js/jquery-ui-1.10.3.min.js"
+                  "js/bootstrap.min.js"
+                  "js/AdminLTE/app.js"]
+    :content-header (content-header)
+    :content (content)}
+   :with-navigation))
