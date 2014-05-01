@@ -24,10 +24,8 @@
 (defn content
   ""
   []
-  (let [col-xs-6-fg (fn [& body]
-                      (col-xs-6 (form-group (clojure.string/join " " body))))
-        col-sm-6-fg (fn [& body]
-                      (col-sm-6 (form-group (clojure.string/join " " body))))
+  (let [col-xs-6-fg (fn [& body] (col-xs-6 (form-group (clojure.string/join " " body))))
+        col-sm-6-fg (fn [& body] (col-sm-6 (form-group (clojure.string/join " " body))))
         label-with-input (fn [l & {:as k}]
                            (str (label l) (input- (merge {:type "text" :class "form-control input-sm"} k))))]
   (row
@@ -35,7 +33,7 @@
     (div {:class "box box-primary"}
      (div {:class "box-header"}
       (h3 {:class "box-title"} "Add An Entry"))
-     (form {:role "form" :method "get" :action "/data"}
+     (form {:role "form" :method "post" :action "/data"}
       (div {:class "box-body"}
        (row
         (col-xs-6-fg
@@ -59,9 +57,9 @@
         (col-sm-6
          (row
           (col-xs-6-fg
-            (label-with-input "# Ldgs." :name "number-landings"))
+            (label-with-input "# Ldgs." :name "number-landings" :placeholder "1"))
           (col-xs-6-fg
-            (label-with-input "# Inst. App." :name "number-instrument-approaches")))))
+            (label-with-input "# Inst. App." :name "number-instrument-approaches" :placeholder "0")))))
        (row
         (col-xs-12
          (label "Aircraft Category")
@@ -181,56 +179,48 @@
      (div {:class "box-header"}
       (h3 {:class "box-title"} "Recent Activity")))))))
 
-(defn footer-content
+(def js-local-script
+  "$(document).ready(function(){
+     $(\"#datemask\").inputmask(\"dd/mm/yyyy\", {\"placeholder\": \"dd/mm/yyyy\"});
+     $(\"[data-mask]\").inputmask();
+
+     $('input[type=radio], input[type=checkbox]').each(function(){
+       var self = $(this);
+       css_color = self.attr('class');
+       label = self.parent().next('label');
+       label_text = label.text();
+
+       label.remove();
+       self.iCheck({
+         checkboxClass: 'icheckbox_'+css_color,
+         radioClass: 'iradio_'+css_color,
+         insert: '<div class=\"icheck_line-icon\"></div>'+label_text
+       });
+     });
+     $(':checkbox').on('ifChanged', function(event){
+       id = $(this).attr('id');
+       if ($(this).is(':checked')) {
+         $('#'+id+'-hours').removeAttr('disabled');
+       } else {
+         $('#'+id+'-hours').attr('disabled','disabled');
+       }
+     });
+   });")
+
+(defn render
   ""
-  []
-  (str
-   (script {:src "//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"})
-   ;(script {:src "//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"})
-   (str-loop [src ["js/jquery-ui-1.10.3.min.js"
-                   "js/bootstrap.min.js"
-                   ;"js/plugins/sparkline/jquery.sparkline.min.js"
-                   ;"js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"
-                   ;"js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"
-                   ;"js/plugins/fullcalendar/fullcalendar.min.js"
-                   ;"js/plugins/jqueryKnob/jquery.knob.js"
-                   ;"js/plugins/daterangepicker/daterangepicker.js"
-                   ;"js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"
-                   "js/plugins/iCheck/icheck.min.js"
-                   "js/AdminLTE/app.js"]]
-     (script {:type "text/javascript" :src src}))
-   (script {:src "js/plugins/input-mask/jquery.inputmask.js" :type "text/javascript"})
-   (script {:src "js/plugins/input-mask/jquery.inputmask.date.extensions.js" :type "text/javascript"})
-   (script {:src "js/plugins/input-mask/jquery.inputmask.extensions.js" :type "text/javascript"})
-   (script {:type "text/javascript"}
-    "$(document).ready(function(){
-       $(\"#datemask\").inputmask(\"dd/mm/yyyy\", {\"placeholder\": \"dd/mm/yyyy\"});
-       $(\"[data-mask]\").inputmask();
-
-       $('input[type=radio], input[type=checkbox]').each(function(){
-         var self = $(this);
-         css_color = self.attr('class');
-         label = self.parent().next('label');
-         label_text = label.text();
-
-         label.remove();
-         self.iCheck({
-           checkboxClass: 'icheckbox_'+css_color,
-           radioClass: 'iradio_'+css_color,
-           insert: '<div class=\"icheck_line-icon\"></div>'+label_text
-         });
-       });
-       $(':checkbox').on('ifChanged', function(event){
-         id = $(this).attr('id');
-         if ($(this).is(':checked')) {
-           $('#'+id+'-hours').removeAttr('disabled');
-         } else {
-           $('#'+id+'-hours').attr('disabled','disabled');
-         }
-       });
-     });")))
-
-;; (defn main
-;;   ""
-;;   []
-;;   (fl-base/main {:sidebar-key :flight-log} (content-header) (content) (footer-content)))
+  [& request]
+  (fl-base/render
+   {:body-attrs {:class "skin-blue"}
+    :css-includes :all-css
+    :js-includes ["js/jquery-ui-1.10.3.min.js"
+                  "js/bootstrap.min.js"
+                  "js/plugins/iCheck/icheck.min.js"
+                  "js/AdminLTE/app.js"
+                  "js/plugins/input-mask/jquery.inputmask.js"
+                  "js/plugins/input-mask/jquery.inputmask.date.extensions.js"
+                  "js/plugins/input-mask/jquery.inputmask.extensions.js"]
+    :js-local-script js-local-script
+    :content-header (content-header)
+    :content (content)}
+   :with-navigation))

@@ -1,1 +1,9 @@
-
+target/*
+docs/*
+.lein-repl-history
+*.pyc
+*~
+.idea/*
+*.iml
+resources/storm-*
+.DS_Store

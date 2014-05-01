@@ -94,28 +94,9 @@
          (input- {:type "text" :class "knob" :data-readonly "true" :value "30" :data-width "60" :data-height "60" :data-angleArc "250" :data-angleOffset "-125" :data-fgColor "#3c8dbc"})
          (div {:class "knob-label"} "RAM")))))))))
 
-;; (defn content-footer
-;;   ""
-;;   []
-;;   (str
-;;    (script {:src "//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"})
-;;    ;(script {:src "//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"})
-;;    (str-loop [src ["js/jquery-ui-1.10.3.min.js"
-;;                    "js/bootstrap.min.js"
-;;                    ;"js/plugins/sparkline/jquery.sparkline.min.js"
-;;                    ;"js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"
-;;                    ;"js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"
-;;                    ;"js/plugins/fullcalendar/fullcalendar.min.js"
-;;                    ;"js/plugins/jqueryKnob/jquery.knob.js"
-;;                    ;"js/plugins/daterangepicker/daterangepicker.js"
-;;                    ;"js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"
-;;                    ;"js/plugins/iCheck/icheck.min.js"
-;;                    "js/AdminLTE/app.js"]]
-;;      (script {:type "text/javascript" :src src}))))
-
 (defn render
   ""
-  [& args]
+  [& request]
   (fl-base/render
    {:body-attrs {:class "skin-blue"}
     :sidebar-key :dashboard

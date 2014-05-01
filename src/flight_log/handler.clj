@@ -40,10 +40,7 @@
 (def app
  (app-handler
    [cljs-routes home-routes app-routes]
-   :middleware
-   [middleware/template-error-page middleware/log-request]
-   :access-rules
-   []
-   :formats
-   [:json-kw :edn]))
+   :middleware [middleware/template-error-page middleware/log-request]
+   :access-rules []
+   :formats [:json-kw :edn]))
 

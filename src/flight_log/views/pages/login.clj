@@ -30,11 +30,12 @@
 
 (defn render
   ""
-  [& args]
-  (fl-base/render {:html-attrs {:class "bg-black"}
-                   :body-attrs {:class "bg-black"}
-                   :css-includes ["css/bootstrap.min.css"
-                                  "css/font-awesome.min.css"
-                                  "css/AdminLTE.css"]
-                   :js-includes ["js/bootstrap.min.js"]
-                   :content (content)}))
+  [& request]
+  (fl-base/render
+   {:html-attrs {:class "bg-black"}
+    :body-attrs {:class "bg-black"}
+    :css-includes ["css/bootstrap.min.css"
+                   "css/font-awesome.min.css"
+                   "css/AdminLTE.css"]
+    :js-includes ["js/bootstrap.min.js"]
+    :content (content)}))
