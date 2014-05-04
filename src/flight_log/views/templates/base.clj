@@ -1,5 +1,7 @@
 (ns flight-log.views.templates.base
-  (:require [clj-template.html5 :refer :all :exclude [main map meta time]]
+  (:require digest
+            [clojure.string :as clj-str]
+            [clj-template.html5 :refer :all :exclude [main map meta time]]
             [clj-template.util :refer [str-loop]]
             [flight-log.views.templates.base.head :as fl-head]
             [flight-log.views.templates.base.navigation :as fl-nav]
@@ -41,16 +43,17 @@
         opts (set opts)
         openid (get-in req [:request :session :cemerick.friend/identity])
         {id :identity :keys [firstname lastname email language country] :as usr}
-        (get-in openid [:authentications (get openid :current)])]
+        (get-in openid [:authentications (get openid :current)])
+        gravatar-hash (digest/md5 (clj-str/lower-case (clj-str/trim email)))]
     (html html-attrs
      (fl-head/head website-title css-includes)
      (if (contains? opts :with-navigation)
        ;; IF TRUE
        (body body-attrs
-        (fl-nav/header website-title usr)
+        (fl-nav/header website-title usr gravatar-hash)
         (div {:class "wrapper row-offcanvas row-offcanvas-left"}
          (aside {:class "left-side sidebar-offcanvas"}
-          (fl-sidebar/sidebar sidebar-key usr))
+          (fl-sidebar/sidebar sidebar-key usr gravatar-hash))
          (aside {:class "right-side"}
           (section {:class "content-header"} content-header)
           (section {:class "content"} content)))

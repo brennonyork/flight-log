@@ -16,10 +16,11 @@
    handler
    {:allow-anon? true
     :default-landing-uri "/"
-    ;:unauthorized-handler (fn [request] (prn "UNAUTHORIZED" request) request)
-    ;:unauthenticated-handler (fn [request] (prn "UNAUTHENTICATED" request) request)
+    ;:unauthorized-handler (fn [request] (prn "HANDLER-UNAUTHORIZED" request) request)
+    ;:unauthenticated-handler (fn [request] (prn "HANDLER-UNAUTHENTICATED" request) request)
     :workflows [(openid/workflow
-                 :login-failure-handler (fn [request] (prn "FAILED REQUEST!!" request) request)
+                 ;:login-failure-handler (fn [request] (prn "FAILED REQUEST!!" request) request)
                  :openid-uri "/openid"
                  :realm "http://localhost:3000"
                  :credential-fn identity)]}))
+

@@ -98,7 +98,7 @@
   ""
   [req]
   (fl-base/render req
-   {:body-attrs {:class "skin-blue"}
+   {:body-attrs {:class "skin-black"}
     :sidebar-key :dashboard
     :css-includes :all-css
     :js-includes ["js/jquery-ui-1.10.3.min.js"

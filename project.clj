@@ -10,6 +10,7 @@
                  [org.clojure/clojurescript "0.0-2138"]
                  [org.clojure/clojure "1.6.0"]
                  [com.cemerick/friend "0.2.0"]
+                 [digest "1.4.4"]
                  [ring-server "0.3.1"]
                  [environ "0.4.0"]
                  [markdown-clj "0.9.41"]

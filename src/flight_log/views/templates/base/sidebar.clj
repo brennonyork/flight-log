@@ -3,10 +3,10 @@
 
 (defn user-panel
   ""
-  [usr-firstname]
+  [usr-firstname gravatar-hash]
   (div {:class "user-panel"}
    (div {:class "pull-left image"}
-    (img- {:src "img/avatar3.png" :class "img-circle" :alt "User Image"}))
+    (img- {:src (str "http://www.gravatar.com/avatar/" gravatar-hash) :class "img-circle" :alt "User Image"}))
    (div {:class "pull-left info"}
     (p (str "Hello, " usr-firstname "!"))
     (a {:href "#"}
@@ -76,10 +76,10 @@
 
 (defn sidebar
   ""
-  [sidebar-key usr]
+  [sidebar-key usr gravatar-hash]
   (let [{:keys [firstname]} usr]
     (section {:class "sidebar"}
-     (user-panel firstname)
+     (user-panel firstname gravatar-hash)
      (ul {:class "sidebar-menu"}
       (if (= sidebar-key :dashboard) (dashboard :active) (dashboard))
       (if (= sidebar-key :flight-log) (flight-log :active) (flight-log))

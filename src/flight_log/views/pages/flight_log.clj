@@ -47,7 +47,7 @@
   ""
   [req]
   (fl-base/render req
-   {:body-attrs {:class "skin-blue"}
+   {:body-attrs {:class "skin-black"}
     :css-includes :all-css
     :js-includes ["js/jquery-ui-1.10.3.min.js" "js/bootstrap.min.js"
                   "js/plugins/sparkline/jquery.sparkline.min.js"

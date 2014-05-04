@@ -26,7 +26,7 @@
 (defn notifications
   ""
   []
-  (li {:class "dropdown notifications-menu"}
+  (li {:style "padding-left:5px" :class "dropdown notifications-menu"}
    (a {:href "#" :class "dropdown-toggle" :data-toggle "dropdown"}
     (i {:class "fa fa-warning"})
     (span {:class "label label-warning"} "10"))
@@ -63,22 +63,22 @@
 
 (defn user-menu
   ""
-  [usr-firstname usr-lastname]
+  [usr-firstname usr-lastname gravatar-hash]
   (let [full-name (str usr-firstname " " usr-lastname)]
-    (li {:class "dropdown user user-menu"}
+    (li {:style "padding-left:10px" :class "dropdown user user-menu"}
      (a {:href "#" :class "dropdown-toggle" :data-toggle "dropdown"}
       (i {:class "glyphicon glyphicon-user"})
       (span full-name (i {:class "caret"})))
      (ul {:class "dropdown-menu"}
       (li {:class "user-header bg-light-blue"}
-       ;(img- {:src "img/avatar3.png" :class "img-circle" :alt "User Image"})
+       (img- {:src (str "http://www.gravatar.com/avatar/" gravatar-hash) :class "img-circle" :alt "User Image"})
        (p full-name (small "Member since Nov. 2012"))
        (button {:class "btn btn-default"}
         (a {:href "/logout"} "Logout")))))))
 
 (defn header
   ""
-  [website-title usr]
+  [website-title usr gravatar-hash]
   (let [{:keys [firstname lastname]} usr]
     (html-header {:class "header"}
      (a {:href "index.html" :class "logo"} website-title)
@@ -93,4 +93,4 @@
         (messages)
         (notifications)
         ;(tasks)
-        (user-menu firstname lastname)))))))
+        (user-menu firstname lastname gravatar-hash)))))))

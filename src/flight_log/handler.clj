@@ -1,5 +1,5 @@
 (ns flight-log.handler
-  (:require [flight-log.routes.home :refer [home-routes]]
+  (:require [flight-log.routes :refer [home-routes]]
             [flight-log.middleware :as middleware]
             [noir.util.middleware :refer [app-handler]]
             [taoensso.timbre :as timbre]

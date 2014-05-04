@@ -1,6 +1,7 @@
 (ns flight-log.routes.cljsexample
   (:require [compojure.core :refer :all]
-            [flight-log.views.layout :as layout]))
+            ;[flight-log.views.layout :as layout]
+            ))
 
 (def messages
   (atom
