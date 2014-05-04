@@ -22,8 +22,8 @@
 
 (defn render
   ""
-  [& request]
-  (fl-base/render
+  [req]
+  (fl-base/render req
    {:html-attrs {:class "bg-black"}
     :body-attrs {:class "bg-black"}
     :css-includes ["css/bootstrap.min.css"

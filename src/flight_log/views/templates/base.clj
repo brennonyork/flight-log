@@ -17,7 +17,8 @@
 
 (defn render
   ""
-  [{:keys [html-attrs ;; attributes for the `html` tag
+  [req ;; request map
+   {:keys [html-attrs ;; attributes for the `html` tag
            body-attrs ;; attributes for the `body` tag
            sidebar-key ;; sidebar key if the any sidebar item should be activated
            content-header
@@ -34,17 +35,22 @@
          js-includes []
          js-local-script ""}}
    & opts]
-  (let [website-title "Flight Log"
-        opts (set opts)]
+  (let [;; Set the overall website name here
+        website-title "Flight Log"
+        ;; Optional keys are processed as a set
+        opts (set opts)
+        openid (get-in req [:request :session :cemerick.friend/identity])
+        {id :identity :keys [firstname lastname email language country] :as usr}
+        (get-in openid [:authentications (get openid :current)])]
     (html html-attrs
      (fl-head/head website-title css-includes)
      (if (contains? opts :with-navigation)
        ;; IF TRUE
        (body body-attrs
-        (fl-nav/header website-title)
+        (fl-nav/header website-title usr)
         (div {:class "wrapper row-offcanvas row-offcanvas-left"}
          (aside {:class "left-side sidebar-offcanvas"}
-          (fl-sidebar/sidebar sidebar-key))
+          (fl-sidebar/sidebar sidebar-key usr))
          (aside {:class "right-side"}
           (section {:class "content-header"} content-header)
           (section {:class "content"} content)))

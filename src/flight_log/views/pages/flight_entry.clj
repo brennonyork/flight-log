@@ -209,8 +209,8 @@
 
 (defn render
   ""
-  [& request]
-  (fl-base/render
+  [req]
+  (fl-base/render req
    {:body-attrs {:class "skin-blue"}
     :css-includes :all-css
     :js-includes ["js/jquery-ui-1.10.3.min.js"

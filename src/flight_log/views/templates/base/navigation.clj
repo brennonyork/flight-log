@@ -40,53 +40,57 @@
         " 5 new members joined today"))))
     (li {:class "footer"} (a {:href "#"} "View all")))))
 
-(defn tasks
-  ""
-  []
-  (li {:class "dropdown tasks-menu"}
-   (a {:href "#" :class "dropdown-toggle" :data-toggle "dropdown"}
-    (i {:class "fa fa-tasks"})
-    (span {:class "label label-danger"} "9"))
-   (ul {:class "dropdown-menu"}
-    (li {:class "header"} "You have 9 tasks")
-    (li
-     (ul {:class "menu"}
-      (li
-       (a {:href "#"}
-        (h3 "design some buttons" (small {:class "pull-right"} "20%"))
-        (div {:class "progress xs"}
-         (div {:class "progress-bar progress-bar-aqua" :style "width:20%" :role "progressbar" :aria-valuemin "0"
-               :aria-valuemax "100"}
-          (span {:class "sr-only"} "20% complete")))))))
-    (li {:class "footer"}
-     (a {:href "#"} "View all tasks")))))
+;; (defn tasks
+;;   ""
+;;   []
+;;   (li {:class "dropdown tasks-menu"}
+;;    (a {:href "#" :class "dropdown-toggle" :data-toggle "dropdown"}
+;;     (i {:class "fa fa-tasks"})
+;;     (span {:class "label label-danger"} "9"))
+;;    (ul {:class "dropdown-menu"}
+;;     (li {:class "header"} "You have 9 tasks")
+;;     (li
+;;      (ul {:class "menu"}
+;;       (li
+;;        (a {:href "#"}
+;;         (h3 "design some buttons" (small {:class "pull-right"} "20%"))
+;;         (div {:class "progress xs"}
+;;          (div {:class "progress-bar progress-bar-aqua" :style "width:20%" :role "progressbar" :aria-valuemin "0"
+;;                :aria-valuemax "100"}
+;;           (span {:class "sr-only"} "20% complete")))))))
+;;     (li {:class "footer"}
+;;      (a {:href "#"} "View all tasks")))))
 
 (defn user-menu
   ""
-  []
-  (li {:class "dropdown user user-menu"}
-   (a {:href "#" :class "dropdown-toggle" :data-toggle "dropdown"}
-    (i {:class "glyphicon glyphicon-user"})
-    (span "Jane Doe" (i {:class "caret"})))
-   (ul {:class "dropdown-menu"}
-    (li {:class "user-header bg-light-blue"}
-     (img- {:src "img/avatar3.png" :class "img-circle" :alt "User Image"})
-     (p "Jane Doe - Web Dev" (small "Member since Nov. 2012"))))))
+  [usr-firstname usr-lastname]
+  (let [full-name (str usr-firstname " " usr-lastname)]
+    (li {:class "dropdown user user-menu"}
+     (a {:href "#" :class "dropdown-toggle" :data-toggle "dropdown"}
+      (i {:class "glyphicon glyphicon-user"})
+      (span full-name (i {:class "caret"})))
+     (ul {:class "dropdown-menu"}
+      (li {:class "user-header bg-light-blue"}
+       ;(img- {:src "img/avatar3.png" :class "img-circle" :alt "User Image"})
+       (p full-name (small "Member since Nov. 2012"))
+       (button {:class "btn btn-default"}
+        (a {:href "/logout"} "Logout")))))))
 
 (defn header
   ""
-  [website-title]
-  (html-header {:class "header"}
-   (a {:href "index.html" :class "logo"} website-title)
-   (nav {:class "navbar navbar-static-top" :role "navigation"}
-    (a {:href "#" :class "navbar-btn sidebar-toggle" :data-toggle "offcanvas" :role "button"}
-     (span {:class "sr-only"} "Toggle navigation")
-     (span {:class "icon-bar"})
-     (span {:class "icon-bar"})
-     (span {:class "icon-bar"}))
-    (div {:class "navbar-right"}
-     (ul {:class "nav navbar-nav"}
-      (messages)
-      (notifications)
-      (tasks)
-      (user-menu))))))
+  [website-title usr]
+  (let [{:keys [firstname lastname]} usr]
+    (html-header {:class "header"}
+     (a {:href "index.html" :class "logo"} website-title)
+     (nav {:class "navbar navbar-static-top" :role "navigation"}
+      (a {:href "#" :class "navbar-btn sidebar-toggle" :data-toggle "offcanvas" :role "button"}
+       (span {:class "sr-only"} "Toggle navigation")
+       (span {:class "icon-bar"})
+       (span {:class "icon-bar"})
+       (span {:class "icon-bar"}))
+      (div {:class "navbar-right"}
+       (ul {:class "nav navbar-nav"}
+        (messages)
+        (notifications)
+        ;(tasks)
+        (user-menu firstname lastname)))))))

@@ -3,12 +3,12 @@
 
 (defn user-panel
   ""
-  []
+  [usr-firstname]
   (div {:class "user-panel"}
    (div {:class "pull-left image"}
     (img- {:src "img/avatar3.png" :class "img-circle" :alt "User Image"}))
    (div {:class "pull-left info"}
-    (p "Hello, Jane!")
+    (p (str "Hello, " usr-firstname "!"))
     (a {:href "#"}
      (i {:class "fa fa-circle text-success"}) " Online"))))
 
@@ -66,17 +66,21 @@
       (i {:class "fa fa-angle-double-right"})
       " Site Preferences")))))
 
-(defn activated-sidebar-menu
-  "Ensures the sidebar is active for the passed in key"
-  [sidebar-key]
-  (ul {:class "sidebar-menu"}
-   (if (= sidebar-key :dashboard) (dashboard :active) (dashboard))
-   (if (= sidebar-key :flight-log) (flight-log :active) (flight-log))
-   (if (= sidebar-key :settings) (settings :active) (settings))))
+;; (defn activated-sidebar-menu
+;;   "Ensures the sidebar is active for the passed in key"
+;;   [sidebar-key]
+;;   (ul {:class "sidebar-menu"}
+;;    (if (= sidebar-key :dashboard) (dashboard :active) (dashboard))
+;;    (if (= sidebar-key :flight-log) (flight-log :active) (flight-log))
+;;    (if (= sidebar-key :settings) (settings :active) (settings))))
 
 (defn sidebar
   ""
-  [sidebar-key]
-  (section {:class "sidebar"}
-   (user-panel)
-   (activated-sidebar-menu sidebar-key)))
+  [sidebar-key usr]
+  (let [{:keys [firstname]} usr]
+    (section {:class "sidebar"}
+     (user-panel firstname)
+     (ul {:class "sidebar-menu"}
+      (if (= sidebar-key :dashboard) (dashboard :active) (dashboard))
+      (if (= sidebar-key :flight-log) (flight-log :active) (flight-log))
+      (if (= sidebar-key :settings) (settings :active) (settings))))))

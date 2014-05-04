@@ -96,8 +96,8 @@
 
 (defn render
   ""
-  [& request]
-  (fl-base/render
+  [req]
+  (fl-base/render req
    {:body-attrs {:class "skin-blue"}
     :sidebar-key :dashboard
     :css-includes :all-css

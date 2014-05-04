@@ -1,6 +1,7 @@
 (ns flight-log.views.layout
   (:require [liberator.core :as liberate :refer [resource]]
             [cemerick.friend :as friend]
+            [ring.util.response :as resp]
             [compojure.route :as route]
             [flight-log.views.pages [dashboard :as dashboard]
                                     [login :as login]
@@ -37,5 +38,6 @@
   (condp = page-key
     :dashboard    (mk-resource dashboard/render)
     :login        (mk-resource login/render :authorized? true)
+    :logout       (friend/logout* (resp/redirect "/login"))
     :flight-entry (mk-resource flight-entry/render)
     :flight-log   (mk-resource flight-log/render)))
