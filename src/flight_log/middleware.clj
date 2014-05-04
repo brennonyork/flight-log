@@ -1,6 +1,7 @@
 (ns flight-log.middleware
   (:require [taoensso.timbre :as timbre]
-            [selmer.parser :as parser]
+            [cemerick.friend :as friend]
+            [cemerick.friend.openid :as openid]
             [environ.core :refer [env]]))
 
 (defn log-request [handler]
@@ -10,15 +11,15 @@
       (handler req))
     handler))
 
-(defn template-error-page [handler]
-  (if (env :dev)
-    (fn [request]
-      (try
-        (handler request)
-        (catch clojure.lang.ExceptionInfo ex
-          (let [{:keys [type error-template] :as data} (ex-data ex)]
-            (if (= :selmer-validation-error type)
-              {:status 500
-               :body (parser/render error-template data)}
-              (throw ex))))))
-    handler))
+(defn friend-request [handler]
+  (friend/authenticate
+   handler
+   {:allow-anon? true
+    :default-landing-uri "/"
+    ;:unauthorized-handler (fn [request] (prn "UNAUTHORIZED" request) request)
+    ;:unauthenticated-handler (fn [request] (prn "UNAUTHENTICATED" request) request)
+    :workflows [(openid/workflow
+                 :login-failure-handler (fn [request] (prn "FAILED REQUEST!!" request) request)
+                 :openid-uri "/openid"
+                 :realm "http://localhost:3000"
+                 :credential-fn identity)]}))
