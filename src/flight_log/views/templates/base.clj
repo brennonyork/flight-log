@@ -44,7 +44,8 @@
         openid (get-in req [:request :session :cemerick.friend/identity])
         {id :identity :keys [firstname lastname email language country] :as usr}
         (get-in openid [:authentications (get openid :current)])
-        gravatar-hash (digest/md5 (clj-str/lower-case (clj-str/trim email)))]
+        gravatar-hash (when-not (empty? email)
+                        (digest/md5 (clj-str/lower-case (clj-str/trim email))))]
     (html html-attrs
      (fl-head/head website-title css-includes)
      (if (contains? opts :with-navigation)

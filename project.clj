@@ -12,6 +12,7 @@
                  [com.cemerick/friend "0.2.0"]
                  [digest "1.4.4"]
                  [ring-server "0.3.1"]
+                 [ring/ring-core "1.2.2"]
                  [environ "0.4.0"]
                  [markdown-clj "0.9.41"]
                  [com.taoensso/timbre "3.1.6"]

@@ -70,7 +70,7 @@
       (i {:class "glyphicon glyphicon-user"})
       (span full-name (i {:class "caret"})))
      (ul {:class "dropdown-menu"}
-      (li {:class "user-header bg-light-blue"}
+      (li {:class "user-header" :style "background-color:#333"}
        (img- {:src (str "http://www.gravatar.com/avatar/" gravatar-hash) :class "img-circle" :alt "User Image"})
        (p full-name (small "Member since Nov. 2012"))
        (button {:class "btn btn-default"}
@@ -81,7 +81,7 @@
   [website-title usr gravatar-hash]
   (let [{:keys [firstname lastname]} usr]
     (html-header {:class "header"}
-     (a {:href "index.html" :class "logo"} website-title)
+     (a {:href "/dashboard" :class "logo"} website-title)
      (nav {:class "navbar navbar-static-top" :role "navigation"}
       (a {:href "#" :class "navbar-btn sidebar-toggle" :data-toggle "offcanvas" :role "button"}
        (span {:class "sr-only"} "Toggle navigation")

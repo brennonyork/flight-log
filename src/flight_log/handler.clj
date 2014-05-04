@@ -1,6 +1,7 @@
 (ns flight-log.handler
   (:require [flight-log.routes :refer [home-routes]]
             [flight-log.middleware :as middleware]
+            ;[compojure.handler :as handler]
             [noir.util.middleware :refer [app-handler]]
             [taoensso.timbre :as timbre]
             [taoensso.timbre.appenders.rotor :as rotor]
@@ -27,3 +28,11 @@
   (timbre/info "flight-log is shutting down..."))
 
 (def app (app-handler [home-routes] :middleware [middleware/friend-request middleware/log-request]))
+
+;; (def app
+;;   (-> home-routes
+;;       (middleware/param-request)
+;;       (middleware/make-session)
+;;       (middleware/session-request)
+;;       (middleware/friend-request)
+;;       (middleware/log-request)))
