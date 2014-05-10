@@ -881,7 +881,7 @@ body > .header .logo .icon {
   color: #f9f9f9;
   color: rgba(255, 255, 255, 0.8);
   font-size: 17px;
-  text-shadow: 2px 2px 3px #333333;
+  /* text-shadow: 2px 2px 3px #333333; */
   margin-top: 10px;
 }
 .navbar-nav > .user-menu > .dropdown-menu > li.user-header > p > small {

@@ -40,27 +40,6 @@
         " 5 new members joined today"))))
     (li {:class "footer"} (a {:href "#"} "View all")))))
 
-;; (defn tasks
-;;   ""
-;;   []
-;;   (li {:class "dropdown tasks-menu"}
-;;    (a {:href "#" :class "dropdown-toggle" :data-toggle "dropdown"}
-;;     (i {:class "fa fa-tasks"})
-;;     (span {:class "label label-danger"} "9"))
-;;    (ul {:class "dropdown-menu"}
-;;     (li {:class "header"} "You have 9 tasks")
-;;     (li
-;;      (ul {:class "menu"}
-;;       (li
-;;        (a {:href "#"}
-;;         (h3 "design some buttons" (small {:class "pull-right"} "20%"))
-;;         (div {:class "progress xs"}
-;;          (div {:class "progress-bar progress-bar-aqua" :style "width:20%" :role "progressbar" :aria-valuemin "0"
-;;                :aria-valuemax "100"}
-;;           (span {:class "sr-only"} "20% complete")))))))
-;;     (li {:class "footer"}
-;;      (a {:href "#"} "View all tasks")))))
-
 (defn user-menu
   ""
   [usr-firstname usr-lastname gravatar-hash]

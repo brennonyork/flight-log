@@ -8,7 +8,6 @@
           :allowed-methods [:get]
           :available-languages ["en-us"]
           :available-media-types ["text/html"]
-          :authorized? true ;(comp boolean friend/identity :request)
           :handle-not-acceptable "Failed not-acceptable" ;{"application/json" {:success false
                                  ;                     :message "No acceptable resource available"}
                                  ; "text/plain" "No acceptable resource available."

@@ -46,20 +46,26 @@
           (label-with-input "Total Flight Time" :name "total-flight-time")))
        (row
         (col-xs-6-fg
-          (label-with-input "Aircraft Type" :name "aircraft-type"))
+          (label-with-input "Aircraft Type" :name "aircraft-type" :id "aircraft-type"))
         (col-xs-6-fg
-          (label-with-input "Aircraft Indentifier" :name "aircraft-ident")))
+          (label-with-input "Aircraft Indentifier" :name "aircraft-ident" :id "aircraft-ident")))
        (row
         (col-sm-6-fg
           (label "Route of Flight")
           (small {:style "padding-left:5px"} "Separate airports with a space")
-          (input- {:type "text" :class "form-control input-sm"}))
+          (input- {:type "text" :class "form-control input-sm" :name "flight-route"}))
         (col-sm-6
          (row
           (col-xs-6-fg
             (label-with-input "# Ldgs." :name "number-landings" :placeholder "1"))
           (col-xs-6-fg
-            (label-with-input "# Inst. App." :name "number-instrument-approaches" :placeholder "0")))))
+            (label-with-input "# Inst. App." :name "number-inst-approaches" :placeholder "0")))))
+       ;; Remarks
+       (row
+        (col-xs-12
+         (form-group
+          (label "Remarks")
+          (textarea {:class "form-control input-sm" :name "remarks"}))))
        (row
         (col-xs-12
          (label "Aircraft Category")
@@ -89,31 +95,31 @@
         (col-sm-6
          (row
           (col-xs-6-fg
-            (input- {:type "checkbox" :class "line-blue" :name "condition-night" :id "condition-night"})
+            (input- {:type "checkbox" :class "line-blue" :name "cof-night" :id "cof-night"})
             (label "Night"))
           (col-xs-6-fg
-            (input- {:type "text" :class "form-control input-sm" :placeholder "Night time ..." :id "condition-night-hours" :disabled ""}))))
+            (input- {:type "text" :class "form-control input-sm" :placeholder "Night time ..." :id "cof-night-hours" :disabled ""}))))
         (col-sm-6
          (row
           (col-xs-6-fg
-            (input- {:type "checkbox" :class "line-blue" :name "instrument-actual" :id "instrument-actual"})
+            (input- {:type "checkbox" :class "line-blue" :name "cof-inst-actual" :id "cof-inst-actual"})
             (label "Inst. (Actual)"))
           (col-xs-6-fg
-            (input- {:type "text" :class "form-control input-sm" :placeholder "Actual Instrument time ..." :id "instrument-actual-hours" :disabled ""}))))
+            (input- {:type "text" :class "form-control input-sm" :placeholder "Actual Instrument time ..." :id "cof-inst-actual-hours" :disabled ""}))))
         (col-sm-6
          (row
           (col-xs-6-fg
-            (input- {:type "checkbox" :class "line-blue" :name "instrument-simulated" :id "instrument-simulated"})
+            (input- {:type "checkbox" :class "line-blue" :name "cof-inst-simulated" :id "cof-inst-simulated"})
             (label "Inst. (Simulated)"))
           (col-xs-6-fg
-            (input- {:type "text" :class "form-control input-sm" :placeholder "Simulated Instrument time ..." :id "instrument-simulated-hours" :disabled ""}))))
+            (input- {:type "text" :class "form-control input-sm" :placeholder "Simulated Instrument time ..." :id "cof-inst-simulated-hours" :disabled ""}))))
         (col-sm-6
          (row
           (col-xs-6-fg
-            (input- {:type "checkbox" :class "line-blue" :name "flight-simulator" :id "flight-simulator"})
+            (input- {:type "checkbox" :class "line-blue" :name "cof-flight-simulator" :id "cof-flight-simulator"})
             (label "Flight Simulator"))
           (col-xs-6-fg
-            (input- {:type "text" :class "form-control input-sm" :placeholder "Flight Simulator time ..." :id "flight-simulator-hours" :disabled ""})))))
+            (input- {:type "text" :class "form-control input-sm" :placeholder "Flight Simulator time ..." :id "cof-flight-simulator-hours" :disabled ""})))))
        ;; Types of Piloting
        (row
         (col-xs-12
@@ -123,64 +129,96 @@
         (col-sm-6
          (row
           (col-xs-6-fg
-            (input- {:type "checkbox" :class "line-grey" :name "pic" :id "pic"})
+            (input- {:type "checkbox" :class "line-grey" :name "top-pic" :id "top-pic"})
             (label "PIC (incl. Solo)"))
           (col-xs-6-fg
-            (input- {:type "text" :class "form-control input-sm" :placeholder "PIC time ..." :id "pic-hours" :disabled ""}))))
+            (input- {:type "text" :class "form-control input-sm" :placeholder "PIC time ..." :id "top-pic-hours" :disabled ""}))))
         (col-sm-6
          (row
           (col-xs-6-fg
-            (input- {:type "checkbox" :class "line-grey" :name "sic" :id "sic"})
+            (input- {:type "checkbox" :class "line-grey" :name "top-sic" :id "top-sic"})
             (label "SIC"))
           (col-xs-6-fg
-            (input- {:type "text" :class "form-control input-sm" :placeholder "SIC time ..." :id "sic-hours" :disabled ""}))))
+            (input- {:type "text" :class "form-control input-sm" :placeholder "SIC time ..." :id "top-sic-hours" :disabled ""}))))
         (col-sm-6
          (row
           (col-xs-6-fg
-            (input- {:type "checkbox" :class "line-grey" :name "dual" :id "dual"})
+            (input- {:type "checkbox" :class "line-grey" :name "top-dual" :id "top-dual"})
             (label "Dual"))
           (col-xs-6-fg
-            (input- {:type "text" :class "form-control input-sm" :placeholder "Dual time ..." :id "dual-hours" :disabled ""}))))
+            (input- {:type "text" :class "form-control input-sm" :placeholder "Dual time ..." :id "top-dual-hours" :disabled ""}))))
         (col-sm-6
          (row
           (col-xs-6-fg
-            (input- {:type "checkbox" :class "line-grey" :name "cfi" :id "cfi"})
+            (input- {:type "checkbox" :class "line-grey" :name "top-cfi" :id "top-cfi"})
             (label "CFI"))
           (col-xs-6-fg
-            (input- {:type "text" :class "form-control input-sm" :placeholder "CFI time ..." :id "cfi-hours" :disabled ""}))))
+            (input- {:type "text" :class "form-control input-sm" :placeholder "CFI time ..." :id "top-cfi-hours" :disabled ""}))))
         (col-sm-6
          (row
           (col-xs-6-fg
-            (input- {:type "checkbox" :class "line-grey" :name "cross-country" :id "cross-country"})
+            (input- {:type "checkbox" :class "line-grey" :name "top-cross-country" :id "top-cross-country"})
             (label "Cross Country"))
           (col-xs-6-fg
-            (input- {:type "text" :class "form-control input-sm" :placeholder "Cross Country time ..." :id "cross-country-hours" :disabled ""}))))
+            (input- {:type "text" :class "form-control input-sm" :placeholder "Cross Country time ..." :id "top-cross-country-hours" :disabled ""}))))
         (col-sm-6
          (row
           (col-xs-6-fg
-            (input- {:type "checkbox" :class "line-grey" :name "safety" :id "safety"})
+            (input- {:type "checkbox" :class "line-grey" :name "top-safety" :id "top-safety"})
             (label "Safety"))
           (col-xs-6-fg
-            (input- {:type "text" :class "form-control input-sm" :placeholder "Safety time ..." :id "safety-hours" :disabled ""})))))
-       ;; Remarks
+            (input- {:type "text" :class "form-control input-sm" :placeholder "Safety time ..." :id "top-safety-hours" :disabled ""})))))
+       ;; Additional Logging
        (row
         (col-xs-12
-         (form-group
-          (label "Additional Remarks")
-          (textarea {:class "form-control input-sm" :name "remarks"}))))
+         (label "Additional")
+         (sup {:style "padding-left:2px"} (i {:class "fa fa-question-circle" :data-toggle "tooltip" :data-placement "right"
+                                              :title "http://www.ecfr.gov/cgi-bin/text-idx?SID=0d4a360812218d9b7b1fe9927ecb0b10&node=14:2.0.1.1.2.1.1.31&rgn=div8"})))
+        (col-sm-6
+         (row
+          (col-xs-6-fg
+            (input- {:type "checkbox" :class "line-purple" :name "add-tailwheel" :id "add-tailwheel"})
+            (label "Tailwheel"))
+          (col-xs-6-fg
+            (input- {:type "text" :class "form-control input-sm" :placeholder "Tailwheel time ..." :id "add-tailwheel-hours" :disabled ""}))))
+        (col-sm-6
+         (row
+          (col-xs-6-fg
+            (input- {:type "checkbox" :class "line-orange" :name "add-high-performance" :id "add-high-performance"})
+            (label "High Performance"))
+          (col-xs-6-fg
+            (input- {:type "text" :class "form-control input-sm" :placeholder "High performance time ..." :id "add-high-performance-hours" :disabled ""}))))
+        (col-sm-6
+         (row
+          (col-xs-6-fg
+            (input- {:type "checkbox" :class "line-aero" :name "add-aerobatic" :id "add-aerobatic"})
+            (label "Aerobatic"))
+          (col-xs-6-fg
+            (input- {:type "text" :class "form-control input-sm" :placeholder "Aerobatic time ..." :id "add-aerobatic-hours" :disabled ""}))))
+        (col-sm-6
+         (row
+          (col-xs-6-fg
+            (input- {:type "checkbox" :class "line-green" :name "add-complex" :id "add-complex"})
+            (label "Complex"))
+          (col-xs-6-fg
+            (input- {:type "text" :class "form-control input-sm" :placeholder "Complex time ..." :id "add-complex-hours" :disabled ""})))))
        (form-group
         (label {:for "imageAttachment"} "Attach Image")
         (input- {:type "file" :id "imageAttachment"})
         (p {:class "help-block"} "Attach an image to help validate the flight records.")))
       (div {:class "box-footer"}
-       (input- {:type "submit" :class "btn btn-primary"} "Submit")))))
+       (input- {:type "submit" :onclick "return validate_form();" :class "btn btn-primary"} "Submit")))))
    (div {:class "col-lg-4"}
     (div {:class "box box-solid box-success"}
      (div {:class "box-header"}
       (h3 {:class "box-title"} "Recent Activity")))))))
 
 (def js-local-script
-  "$(document).ready(function(){
+  "function validate_form() {
+     return true;
+   }
+
+   $(document).ready(function(){
      $(\"#datemask\").inputmask(\"dd/mm/yyyy\", {\"placeholder\": \"dd/mm/yyyy\"});
      $(\"[data-mask]\").inputmask();
 
